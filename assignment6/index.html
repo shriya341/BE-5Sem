@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management API</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        button {
+            padding: 12px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Product Management System</h1>
+
+    <button onclick="getProducts()">View Products</button>
+    <button onclick="addProduct()">Add Product</button>
+    <button onclick="updateProduct()">Update Product</button>
+    <button onclick="updatePrice()">Update Product Price</button>
+    <button onclick="deleteProduct()">Delete Product</button>
+
+
+    <script>
+
+        const API_URL = "https://fakestoreapi.com/products";
+
+
+        // 1. GET - Fetch all products
+        async function getProducts() {
+            try {
+                const response = await fetch(API_URL);
+
+                const data = await response.json();
+
+                console.log("All Products:");
+                console.log(data);
+
+            } catch (error) {
+                console.log("Error fetching products:", error);
+            }
+        }
+
+
+        // 2. POST - Add a new product
+        async function addProduct() {
+            try {
+
+                const product = {
+                    title: "Wireless Headphones",
+                    price: 1999,
+                    category: "electronics"
+                };
+
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(product)
+                });
+
+                const data = await response.json();
+
+                console.log("Product Added:");
+                console.log(data);
+
+            } catch (error) {
+                console.log("Error adding product:", error);
+            }
+        }
+
+
+        // 3. PUT - Completely update product with ID 1
+        async function updateProduct() {
+            try {
+
+                const product = {
+                    title: "Updated Product",
+                    price: 2499,
+                    category: "electronics",
+                    description: "This product has been completely updated",
+                    image: "https://i.pravatar.cc"
+                };
+
+                const response = await fetch(`${API_URL}/1`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(product)
+                });
+
+                const data = await response.json();
+
+                console.log("Product Completely Updated:");
+                console.log(data);
+
+            } catch (error) {
+                console.log("Error updating product:", error);
+            }
+        }
+
+
+        // 4. PATCH - Update only the price of product ID 1
+        async function updatePrice() {
+            try {
+
+                const response = await fetch(`${API_URL}/1`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        price: 2999
+                    })
+                });
+
+                const data = await response.json();
+
+                console.log("Product Price Updated:");
+                console.log(data);
+
+            } catch (error) {
+                console.log("Error updating price:", error);
+            }
+        }
+
+
+        // 5. DELETE - Delete product ID 1
+        async function deleteProduct() {
+            try {
+
+                const response = await fetch(`${API_URL}/1`, {
+                    method: "DELETE"
+                });
+
+                const data = await response.json();
+
+                console.log("Product Deleted:");
+                console.log(data);
+
+            } catch (error) {
+                console.log("Error deleting product:", error);
+            }
+        }
+
+    </script>
+
+</body>
+</html>
